@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long Châu Pharmacy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'userapp/css/styles.css' %}">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-expand-lg" style="background:#002366;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'userapp/images/logo.png' %}" alt="Long Chau Logo" style="height:40px;">
+            </a>
+            <form class="d-flex mx-auto" style="width:400px;">
+                <input class="form-control rounded-start" type="search" placeholder="Search products, brands and services..." aria-label="Search">
+                <button class="btn btn-light rounded-end" type="submit">&#128269;</button>
+            </form>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-light me-2">Log In</button>
+                <button class="btn btn-light me-2">Register</button>
+                <span class="fs-3 text-light">&#128722;</span>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Menu -->
+    <div class="bg-primary" style="background:#153a7e;">
+        <div class="container-xl">
+            <ul class="nav justify-content-start py-2">
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#">Product Category <span>&#9660;</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#">Find A Store</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#">Health Hub</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-bold" href="#">Promotion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Banner Section -->
+    <div class="container-fluid px-0" style="background:#153a7e;">
+        <img src="{% static 'userapp/images/banner-image.png' %}" alt="Banner" style="width:100%;display:block;">
+    </div>
+    <!-- Banner Buttons -->
+    <div class="container-xl my-4">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <button class="btn btn-banner shadow">Browse Product</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-banner shadow">Upload Prescription</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-banner shadow">Talk with a pharmacist</button>
+            </div>
+        </div>
+    </div>
+    <!-- Promotion Carousel -->
+    <section class="container-xl my-5 px-0">
+        <h2 class="text-center mb-4 section-title">Ongoing Promotion</h2>
+        <div class="promotion-carousel d-flex justify-content-center align-items-center">
+            <button class="btn btn-carousel rounded-circle me-3">
+                <span class="carousel-arrow">&#8592;</span>
+            </button>
+            <div class="carousel-slide"></div>
+            <button class="btn btn-carousel rounded-circle ms-3">
+                <span class="carousel-arrow">&#8594;</span>
+            </button>
+        </div>
+    </section>
+    <!-- Best-selling Products -->
+    <section class="container-xl mb-5">
+        <h2 class="text-center mb-4 section-title">Best-selling products</h2>
+        <div class="row justify-content-center">
+            {% for i in "1234" %}
+            <div class="col-12 col-sm-6 col-md-3 mb-4 d-flex justify-content-center">
+                <div class="product-card shadow">
+                    <div class="product-img"></div>
+                    <div class="product-info">
+                        <p>Product name</p>
+                        <button class="btn btn-product">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer-custom">
+        <div class="container-xl">
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Product Category</a>
+                <a href="#">Contact Info</a>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'userapp/js/scripts.js' %}"></script>
+</body>
+</html>
