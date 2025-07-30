@@ -1,0 +1,1003 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Long Châu Pharmacy</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-blue: #2A5298;
+            --secondary-blue: #1E3A5F;
+            --success-green: #28a745;
+            --warning-orange: #fd7e14;
+            --danger-red: #dc3545;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .checkout-container {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+            background: var(--light-gray);
+        }
+        
+        .checkout-header {
+            background: var(--white);
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .checkout-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .checkout-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 2rem;
+            position: relative;
+            z-index: 2;
+            background: var(--white);
+            padding: 0 1rem;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--border-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            border: 3px solid var(--white);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .step.active .step-number {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: scale(1.1);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .step.completed .step-number {
+            background: var(--success-green);
+            color: var(--white);
+        }
+        
+        .step span {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-align: center;
+        }
+        
+        .step.active span {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+        
+        .step.completed span {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+        
+        .checkout-form {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-form:hover {
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title i {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            display: block;
+            font-size: 0.95rem;
+        }
+        
+        .form-label .text-danger {
+            color: var(--danger-red);
+        }
+        
+        .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+            width: 100%;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.2rem rgba(42, 82, 152, 0.15);
+            outline: none;
+            background: rgba(42, 82, 152, 0.02);
+        }
+        
+        .form-control:invalid {
+            border-color: var(--danger-red);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-method {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-method::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-blue);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary-blue);
+            background: rgba(42, 82, 152, 0.03);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .payment-method:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--primary-blue);
+            background: rgba(42, 82, 152, 0.08);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .payment-method.selected::before {
+            transform: scaleX(1);
+        }
+        
+        .payment-method i {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+        
+        .payment-method:hover i {
+            transform: scale(1.1);
+        }
+        
+        .order-summary {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            position: sticky;
+            top: 2rem;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+        
+        .order-summary:hover {
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .summary-title::before {
+            content: '\f07a';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .order-item:hover {
+            background: rgba(42, 82, 152, 0.02);
+            margin: 0 -1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-info h6 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .item-info small {
+            color: var(--text-light);
+        }
+        
+        .item-price {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .place-order-btn {
+            background: linear-gradient(135deg, var(--success-green), #20c997);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            padding: 18px 24px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .place-order-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .place-order-btn:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .place-order-btn:hover::before {
+            left: 100%;
+        }
+        
+        .place-order-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .back-to-cart {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-cart::before {
+            content: '\f060';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-to-cart:hover {
+            color: var(--secondary-blue);
+            transform: translateX(-3px);
+        }
+        
+        .back-to-cart:hover::before {
+            transform: translateX(-3px);
+        }
+        
+        .security-info {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.08), rgba(40, 167, 69, 0.12));
+            border: 2px solid var(--success-green);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .security-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--success-green);
+        }
+        
+        .security-info i {
+            color: var(--success-green);
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        .security-info small {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        /* Form Row Layouts */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        /* Loading States */
+        .form-control.loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Enhanced Responsive Design */
+        @media (max-width: 1024px) {
+            .checkout-container {
+                padding: 1.5rem 0;
+            }
+            
+            .checkout-form {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .checkout-steps::before {
+                display: none;
+            }
+            
+            .step {
+                margin: 0;
+                flex-direction: row;
+                text-align: left;
+                gap: 1rem;
+            }
+            
+            .checkout-form {
+                padding: 1rem;
+            }
+            
+            .order-summary {
+                position: static;
+                margin-top: 2rem;
+                order: -1;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .form-row,
+            .form-row-3 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .checkout-header {
+                padding: 1rem 0;
+            }
+            
+            .checkout-title {
+                font-size: 1.8rem;
+            }
+            
+            .checkout-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .payment-method {
+                padding: 1rem 0.75rem;
+            }
+            
+            .payment-method i {
+                font-size: 2rem;
+            }
+            
+            .place-order-btn {
+                padding: 16px 20px;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .form-control {
+                padding: 10px 14px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Logo -->
+                <div class="col-md-3">
+                    <div class="logo-container">
+                        <div class="logo-icon">
+                           <a href="{% url 'home' %}"><img src="{% static 'images/logo.svg' %}" alt="Long Châu Pharmacy"></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="col-md-6">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search products, brands and services...">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- User Actions -->
+                <div class="col-md-3">
+                    <div class="user-actions">
+                    {% if user.is_authenticated %}
+                        <!-- Authenticated User Menu -->
+                        <div class="dropdown">
+                            <a href="#" class="action-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i>
+                                <span>{{ user.first_name|default:user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="fas fa-user-circle"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-history"></i> Order History</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <!-- Guest User Menu -->
+                        <a href="{% url 'accounts:login' %}" class="action-link">
+                            <i class="fas fa-user"></i>
+                            <span>Log In</span>
+                        </a>
+                        <a href="{% url 'accounts:register' %}" class="action-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Register</span>
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'cart' %}" class="action-link cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">Product Category <i class="fas fa-chevron-down"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Find a Store</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Health Hub</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Promotions</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Checkout Header -->
+    <div class="checkout-header">
+        <div class="container">
+            <h1 class="checkout-title">Checkout</h1>
+            <p class="checkout-subtitle">Complete your order securely</p>
+            
+            <!-- Checkout Steps -->
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <span>Cart</span>
+                </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <span>Checkout</span>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <span>Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Content -->
+    <div class="checkout-container">
+        <div class="container">
+            <a href="{% url 'cart' %}" class="back-to-cart">
+                <i class="fas fa-arrow-left"></i>
+                Back to Cart
+            </a>
+            
+            <div class="row">
+                <!-- Checkout Form -->
+                <div class="col-lg-8">
+                    <form id="checkoutForm">
+                        <!-- Customer Information -->
+                        <div class="checkout-form">
+                            <div class="form-section">
+                                <h3 class="section-title">
+                                    <i class="fas fa-user"></i>
+                                    Thông tin khách hàng
+                                </h3>
+                                <div class="form-group">
+                                    <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Nhập họ và tên đầy đủ" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" placeholder="example@email.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" placeholder="0123 456 789" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <div class="checkout-form">
+                            <div class="form-section">
+                                <h3 class="section-title">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Địa chỉ giao hàng
+                                </h3>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="address" placeholder="Số nhà, tên đường, phường/xã" required>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Thành phố <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="city" required>
+                                            <option value="">Chọn thành phố</option>
+                                            <option value="hanoi">Hà Nội</option>
+                                            <option value="hcm">TP. Hồ Chí Minh</option>
+                                            <option value="danang">Đà Nẵng</option>
+                                            <option value="haiphong">Hải Phòng</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Mã bưu điện <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="postalCode" placeholder="100000" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Ghi chú giao hàng</label>
+                                    <textarea class="form-control" name="notes" rows="3" placeholder="Hướng dẫn giao hàng đặc biệt..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="checkout-form">
+                            <div class="form-section">
+                                <h3 class="section-title">
+                                    <i class="fas fa-credit-card"></i>
+                                    Phương thức thanh toán
+                                </h3>
+                                
+                                <div class="payment-methods">
+                                    <div class="payment-method" data-method="card">
+                                        <i class="fas fa-credit-card"></i>
+                                        <div>Thẻ tín dụng/ghi nợ</div>
+                                        <small class="text-muted">Visa, Mastercard</small>
+                                    </div>
+                                    <div class="payment-method" data-method="momo">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <div>Ví MoMo</div>
+                                        <small class="text-muted">Thanh toán di động</small>
+                                    </div>
+                                    <div class="payment-method" data-method="banking">
+                                        <i class="fas fa-university"></i>
+                                        <div>Internet Banking</div>
+                                        <small class="text-muted">Chuyển khoản trực tuyến</small>
+                                    </div>
+                                    <div class="payment-method" data-method="cod">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <div>Thanh toán khi nhận hàng</div>
+                                        <small class="text-muted">Trả tiền khi nhận</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Card Details (shown when card is selected) -->
+                                <div id="cardDetails" class="mt-3" style="display: none;">
+                                    <div class="form-group">
+                                        <label class="form-label">Số thẻ <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="cardNumber" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                        <small class="form-text text-muted">Nhập 16 chữ số trên thẻ của bạn</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Tên chủ thẻ <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="cardholderName" placeholder="NGUYEN VAN A" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Tháng hết hạn <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="expiryMonth" required>
+                                                <option value="">Tháng</option>
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Năm hết hạn <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="expiryYear" required>
+                                                <option value="">Năm</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                                <option value="2029">2029</option>
+                                                <option value="2030">2030</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">CVV <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="cvv" placeholder="123" maxlength="4" required>
+                                        <small class="form-text text-muted">3-4 chữ số sau thẻ</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="order-summary">
+                        <h3 class="summary-title">Order Summary</h3>
+                        
+                        <!-- Order Items -->
+                        <div class="order-item">
+                            <div class="item-info">
+                                <h6>Paracetamol 500mg</h6>
+                                <small>Quantity: 2</small>
+                            </div>
+                            <div class="item-price">₫50,000</div>
+                        </div>
+                        
+                        <div class="order-item">
+                            <div class="item-info">
+                                <h6>Vitamin C 1000mg</h6>
+                                <small>Quantity: 1</small>
+                            </div>
+                            <div class="item-price">₫150,000</div>
+                        </div>
+                        
+                        <div class="order-item">
+                            <div class="item-info">
+                                <h6>Omega-3 Fish Oil</h6>
+                                <small>Quantity: 1</small>
+                            </div>
+                            <div class="item-price">₫320,000</div>
+                        </div>
+                        
+                        <!-- Summary Totals -->
+                        <div class="mt-3">
+                            <div class="summary-row">
+                                <span>Subtotal</span>
+                                <span>₫520,000</span>
+                            </div>
+                            
+                            <div class="summary-row">
+                                <span>Shipping</span>
+                                <span>₫30,000</span>
+                            </div>
+                            
+                            <div class="summary-row">
+                                <span>Tax</span>
+                                <span>₫55,000</span>
+                            </div>
+                            
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span>₫605,000</span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" form="checkoutForm" class="place-order-btn">
+                            <i class="fas fa-check me-2"></i>
+                            Place Order
+                        </button>
+                        
+                        <div class="security-info">
+                            <i class="fas fa-shield-alt"></i>
+                            <small>Your payment information is secure and encrypted</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="footer-title">About Us</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="footer-title">Product Category</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="footer-title">Contact Info</h5>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove selected class from all methods
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                
+                // Add selected class to clicked method
+                this.classList.add('selected');
+                
+                // Show/hide card details
+                const cardDetails = document.getElementById('cardDetails');
+                if (this.dataset.method === 'card') {
+                    cardDetails.style.display = 'block';
+                } else {
+                    cardDetails.style.display = 'none';
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            // Check if payment method is selected
+            const selectedPayment = document.querySelector('.payment-method.selected');
+            if (!selectedPayment) {
+                alert('Please select a payment method.');
+                return;
+            }
+            
+            if (isValid) {
+                // Simulate order processing
+                const btn = document.querySelector('.place-order-btn');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Order placed successfully! You will receive a confirmation email shortly.');
+                    // In a real application, redirect to confirmation page
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+        
+        // Card number formatting
+        document.addEventListener('input', function(e) {
+            if (e.target.name === 'cardNumber') {
+                let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formattedValue;
+            }
+        });
+    </script>
+    <script src="{% static 'js/logout.js' %}"></script>
+</body>
+</html>

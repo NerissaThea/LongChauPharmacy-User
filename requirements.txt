@@ -1,0 +1,33 @@
+# Django Project Requirements
+# Core Django framework
+Django>=5.2.0,<6.0.0
+
+# Database
+psycopg2-binary>=2.9.0  # PostgreSQL adapter for Supabase
+# mysqlclient>=2.1.0      # MySQL adapter (uncomment if using MySQL)
+
+# Development tools
+django-debug-toolbar>=4.0.0
+
+# Static files and media handling
+Whitenoise>=6.0.0
+Pillow>=9.0.0  # For ImageField support
+
+# Environment variables
+python-decouple>=3.6
+python-dotenv>=1.0.0  # For loading .env files
+
+# Supabase integration
+supabase>=2.0.0  # Official Supabase Python client
+
+# API development (optional)
+# djangorestframework>=3.14.0
+# django-cors-headers>=3.13.0
+
+# Authentication and security (optional)
+# django-allauth>=0.51.0
+# django-crispy-forms>=1.14.0
+
+# Production deployment (optional)
+# gunicorn>=20.1.0
+# dj-database-url>=1.0.0

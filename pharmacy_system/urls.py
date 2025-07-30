@@ -1,5 +1,5 @@
 """
-URL configuration for config project.
+URL configuration for pharmacy_system project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -16,9 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
     path('accounts/', include('accounts.urls')),
-    path('', include('userapp.urls')),
+    # Keep old URLs for backward compatibility
+    path('login/', views.login_view, name='old_login'),
+    path('register/', views.register_view, name='old_register'),
+    path('cart/', views.cart_view, name='cart'),
+    path('checkout/', views.checkout_view, name='checkout'),
+    path('simple-login/', views.simple_login_view, name='simple_login'),
+    path('test-checkbox/', views.test_checkbox_view, name='test_checkbox'),
 ]

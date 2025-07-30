@@ -1,0 +1,594 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Long Châu Pharmacy</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    
+    <style>
+        /* Auth-specific styles */
+        .auth-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 2rem;
+        }
+        
+        .auth-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .auth-image-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+        }
+        
+        .auth-image-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        }
+        
+        .auth-illustration {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .auth-illustration i {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .auth-illustration h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-illustration p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .auth-form-section {
+            padding: 3rem;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.2rem rgba(42, 82, 152, 0.25);
+        }
+        
+        .password-field {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .auth-btn {
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-btn:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.3);
+        }
+        
+        .custom-checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            padding: 0;
+            position: relative;
+        }
+        
+        .custom-checkbox-wrapper .custom-checkbox-input,
+        input[type="checkbox"].custom-checkbox-input {
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .custom-checkbox-input:checked {
+            accent-color: #2a5298;
+        }
+        
+        .custom-checkbox-input:focus {
+            border-color: #2a5298 !important;
+            box-shadow: 0 0 0 0.2rem rgba(42, 82, 152, 0.25) !important;
+            outline: none !important;
+        }
+        
+        .custom-checkbox-input:hover {
+            border-color: #2a5298 !important;
+        }
+        
+        .custom-checkbox-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            cursor: pointer;
+            line-height: 1.4;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .custom-checkbox-label a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .custom-checkbox-label a:hover {
+            color: var(--secondary-blue);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .auth-footer p {
+            color: var(--text-light);
+            margin: 0;
+        }
+        
+        .auth-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .auth-footer a:hover {
+            color: var(--secondary-blue);
+        }
+        
+        .auth-navbar {
+            background: rgba(42, 82, 152, 0.9);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-logo {
+            display: inline-block;
+            transition: opacity 0.3s ease;
+        }
+        
+        .navbar-logo:hover {
+            opacity: 0.8;
+        }
+        
+        .navbar-logo img {
+            height: 30px;
+            width: auto;
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .strength-weak { color: #dc3545; }
+        .strength-medium { color: #ffc107; }
+        .strength-strong { color: #28a745; }
+        
+        @media (max-width: 768px) {
+            .auth-card {
+                margin: 1rem;
+                border-radius: 15px;
+            }
+            
+            .auth-form-section {
+                padding: 2rem;
+            }
+            
+            .auth-image-section {
+                padding: 2rem;
+                min-height: 200px;
+            }
+            
+            .auth-illustration i {
+                font-size: 4rem;
+            }
+            
+            .auth-illustration h3 {
+                font-size: 1.5rem;
+            }
+            
+            .auth-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="auth-navbar">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <a href="{% url 'home' %}" class="navbar-logo">
+                        <img src="{% static 'images/logo.svg' %}" alt="Long Châu Pharmacy">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="row g-0">
+                <!-- Left Side - Illustration -->
+                <div class="col-lg-6 auth-image-section">
+                    <div class="auth-illustration">
+                        <i class="fas fa-user-plus"></i>
+                        <h3>Join Long Châu!</h3>
+                        <p>Create your account to access personalized healthcare services and manage your wellness journey.</p>
+                    </div>
+                </div>
+                
+                <!-- Right Side - Register Form -->
+                <div class="col-lg-6 auth-form-section">
+                    <div class="auth-header">
+                        <h1 class="auth-title">Create Account</h1>
+                        <p class="auth-subtitle">Fill in your information to get started</p>
+                    </div>
+                    
+                    <form id="registerForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-field">
+                                <input type="password" class="form-control" id="password" placeholder="Create a strong password" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <i class="fas fa-eye" id="passwordIcon"></i>
+                                </button>
+                            </div>
+                            <div id="passwordStrength" class="password-strength"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="password-field">
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                                <button type="button" class="password-toggle" onclick="toggleConfirmPassword()">
+                                    <i class="fas fa-eye" id="confirmPasswordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="custom-checkbox-wrapper">
+                                <input class="custom-checkbox-input" type="checkbox" id="agreeTerms" required>
+                                <label class="custom-checkbox-label" for="agreeTerms">
+                                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="custom-checkbox-wrapper">
+                                <input class="custom-checkbox-input" type="checkbox" id="newsletter">
+                                <label class="custom-checkbox-label" for="newsletter">
+                                    Subscribe to our newsletter for health tips and promotions
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Create Account
+                        </button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="{% url 'accounts:login' %}">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordField.type = 'password';
+                passwordIcon.className = 'fas fa-eye';
+            }
+        }
+        
+        function toggleConfirmPassword() {
+            const confirmPasswordField = document.getElementById('confirmPassword');
+            const confirmPasswordIcon = document.getElementById('confirmPasswordIcon');
+            
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text';
+                confirmPasswordIcon.className = 'fas fa-eye-slash';
+            } else {
+                confirmPasswordField.type = 'password';
+                confirmPasswordIcon.className = 'fas fa-eye';
+            }
+        }
+        
+        function checkPasswordStrength(password) {
+            const strengthDiv = document.getElementById('passwordStrength');
+            let strength = 0;
+            let message = '';
+            
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (password.length === 0) {
+                strengthDiv.innerHTML = '';
+                return;
+            }
+            
+            if (strength < 3) {
+                message = '<span class="strength-weak">Weak password</span>';
+            } else if (strength < 5) {
+                message = '<span class="strength-medium">Medium password</span>';
+            } else {
+                message = '<span class="strength-strong">Strong password</span>';
+            }
+            
+            strengthDiv.innerHTML = message;
+        }
+        
+        document.getElementById('password').addEventListener('input', function(e) {
+            checkPasswordStrength(e.target.value);
+        });
+        
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const newsletter = document.getElementById('newsletter').checked;
+            
+            console.log('Form data:', { firstName, lastName, email, phone, password, confirmPassword, agreeTerms, newsletter });
+            
+            // Validate required fields
+            if (!firstName.trim()) {
+                alert('❌ Vui lòng nhập Họ');
+                return;
+            }
+            
+            if (!lastName.trim()) {
+                alert('❌ Vui lòng nhập Tên');
+                return;
+            }
+            
+            if (!email.trim()) {
+                alert('❌ Vui lòng nhập Email');
+                return;
+            }
+            
+            if (!phone.trim()) {
+                alert('❌ Vui lòng nhập Số điện thoại');
+                return;
+            }
+            
+            if (!agreeTerms) {
+                alert('❌ Vui lòng đồng ý với Điều khoản dịch vụ và Chính sách bảo mật');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('❌ Mật khẩu xác nhận không khớp');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('❌ Mật khẩu phải có ít nhất 8 ký tự');
+                return;
+            }
+            
+            // Disable submit button
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+            
+            // Get CSRF token from form
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            // Send AJAX request
+            fetch('/accounts/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    confirmPassword: confirmPassword,
+                    agreeTerms: agreeTerms,
+                    newsletter: newsletter
+                })
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    alert('🎉 Đăng ký thành công! ' + data.message);
+                    window.location.href = data.redirect_url;
+                } else {
+                    let errorMessage = '❌ Đăng ký thất bại: ' + (data.message || 'Vui lòng thử lại.');
+                    if (data.errors) {
+                        console.log('Form errors:', data.errors);
+                        // Display specific field errors
+                        for (let field in data.errors) {
+                            errorMessage += '\n- ' + field + ': ' + data.errors[field].join(', ');
+                        }
+                    }
+                    alert(errorMessage);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Lỗi kết nối: Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.');
+            })
+            .finally(() => {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i>Create Account';
+            });
+        });
+        
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

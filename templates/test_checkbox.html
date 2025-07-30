@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkbox Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        
+        .form-check {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 0.75rem !important;
+            margin-bottom: 1.5rem !important;
+            padding: 0 !important;
+        }
+        
+        .form-check-input {
+            width: 18px !important;
+            height: 18px !important;
+            margin: 0 !important;
+            margin-top: 2px !important;
+            border: 2px solid #dee2e6 !important;
+            border-radius: 4px !important;
+            background-color: #fff !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            flex-shrink: 0 !important;
+            position: relative !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+        }
+        
+        .form-check-input:checked {
+            background-color: #2a5298 !important;
+            border-color: #2a5298 !important;
+        }
+        
+        .form-check-input:checked::after {
+            content: '✓' !important;
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            color: white !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+        }
+        
+        .form-check-input:focus {
+            border-color: #2a5298 !important;
+            box-shadow: 0 0 0 0.2rem rgba(42, 82, 152, 0.25) !important;
+            outline: none !important;
+        }
+        
+        .form-check-input:hover {
+            border-color: #2a5298 !important;
+        }
+        
+        .form-check-label {
+            color: #666 !important;
+            font-size: 0.9rem !important;
+            cursor: pointer !important;
+            line-height: 1.4 !important;
+        }
+        
+        .form-check-label a {
+            color: #2a5298 !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+        }
+        
+        .form-check-label a:hover {
+            color: #1e3d6f !important;
+        }
+        
+        .test-button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #2a5298;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h2>Checkbox Test Page</h2>
+        <p>Test the checkbox functionality:</p>
+        
+        <form id="testForm">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                <label class="form-check-label" for="agreeTerms">
+                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </label>
+            </div>
+            
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="newsletter">
+                <label class="form-check-label" for="newsletter">
+                    Subscribe to our newsletter for health tips and promotions
+                </label>
+            </div>
+            
+            <button type="button" class="test-button" onclick="testCheckboxes()">Test Checkboxes</button>
+        </form>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+    
+    <script>
+        function testCheckboxes() {
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const newsletter = document.getElementById('newsletter').checked;
+            
+            const result = document.getElementById('result');
+            result.style.display = 'block';
+            result.innerHTML = `
+                <h4>Checkbox Status:</h4>
+                <p><strong>Terms Agreement:</strong> ${agreeTerms ? 'Checked ✓' : 'Not Checked ✗'}</p>
+                <p><strong>Newsletter:</strong> ${newsletter ? 'Checked ✓' : 'Not Checked ✗'}</p>
+            `;
+        }
+        
+        // Add event listeners to checkboxes
+        document.getElementById('agreeTerms').addEventListener('change', function() {
+            console.log('Terms checkbox changed:', this.checked);
+        });
+        
+        document.getElementById('newsletter').addEventListener('change', function() {
+            console.log('Newsletter checkbox changed:', this.checked);
+        });
+    </script>
+</body>
+</html>
